@@ -1,0 +1,19 @@
+{
+  "name": "cpsc410_vis",
+  "version": "1.0.0",
+  "description": "UBC CPSC 410 Visualization Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpeng06/CPSC410_VIS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpeng06/CPSC410_VIS/issues"
+  },
+  "homepage": "https://github.com/jpeng06/CPSC410_VIS#readme"
+}
