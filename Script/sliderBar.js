@@ -33,8 +33,10 @@ $('input[type="range"]').rangeslider({
 
     // Callback function
     onSlide: function(position, value) {
+        var rangeLabels = this.$element.attr('labels');
+        rangeLabels = rangeLabels.split(', ');
         var $handle = this.$range.find('.rangeslider__handle__value');
-        $handle.text(this.value);
+        $handle.text(rangeLabels[this.value]);
     },
 
     // Callback function
