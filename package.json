@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jpeng06/CPSC410_VIS/issues"
   },
-  "homepage": "https://github.com/jpeng06/CPSC410_VIS#readme"
+  "homepage": "https://github.com/jpeng06/CPSC410_VIS#readme",
+  "dependencies": {
+    "nodegit": "^0.23.0"
+  }
 }
