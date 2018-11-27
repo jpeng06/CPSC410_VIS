@@ -3,15 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>CPSC 410</title>
+    <link rel="stylesheet" type="text/css" href="Style/main.css" />
     <link rel="stylesheet" type="text/css" href="Style/sliderBar.css" />
     <link rel="stylesheet" type="text/css" href="Style/node.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="//d3js.org/d3.v3.min.js"></script>
 </head>
 <body>
-<div id="visualization"></div>
-<div class="rangeslider-wrap">
-    <input type="range" min="0" max="9" step="1" labels="Oct 12, Oct 23, Nov 1, Nov 2, Nov 6, Nov 12, Nov 13, Nov 20, Nov 21, Nov 24">
+<div class="card">
+    <div class="container">
+        <div class="boo-wrapper">
+            <div id="visualization"></div>
+            <div class="rangeslider-wrap">
+                <input type="range" min="0" max="9" step="1" labels="Oct 12, Oct 23, Nov 1, Nov 2, Nov 6, Nov 12, Nov 13, Nov 20, Nov 21, Nov 24">
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script src="https://rawgit.com/andreruffert/rangeslider.js/develop/dist/rangeslider.min.js"></script>
