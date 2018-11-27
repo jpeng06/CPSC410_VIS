@@ -25,11 +25,13 @@ Git.Clone(url, localPath).then(function(repository) {
         console.log("listing SHA's: " + commits[i].sha());
     }
 
-    // currently... apparently "getting" a commit, but documentation is... scant. No idea how to replace
-    // tmp with current commit, or if that's even possible.
-    currentRepo.getCommit(commits[commits.length - 1].sha()).then(function(thing) {
-        thing
+    // currently... apparently "getting" a commit, but documentation is... scant. No idea how to make more
+    // tmp directories with current commit, or if that's even possible.
+    currentRepo.getCommit(commits[commits.length - 1].sha()).then(function(commit) {
+        console.log("checking out commit: ");
+        Git.Checkout.tree(currentRepo, commit, {checkoutStrategy: Git.Checkout.STRATEGY.SAFE});
+        console.log("wooo. did it");
     });
-    console.log("wooo.");
-});
 
+    console.log("done.");
+});
