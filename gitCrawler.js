@@ -56,7 +56,6 @@ Git.Clone(url, localPath).then(function(repository) {
                 // ...
                 console.log("success.");
             });
-            next();
         });
     }
 
