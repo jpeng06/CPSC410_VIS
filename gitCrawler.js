@@ -12,14 +12,14 @@
 const Git = require("nodegit");
 
 const url = "https://github.com/jpeng06/CPSC410_VIS.git";     // repo to clone
-var localPath = require("path").join(__dirname, "tmp");       // where we want to put tmp
-var maxCommits = 30;                                          // max # of commits to go back to.
-var currentCommit = null;
+const localPath = require("path").join(__dirname, "tmp");       // where we want to put tmp
+const maxCommits = 30;                                          // max # of commits to go back to.
+let currentCommit = null;
 
 // initialize our walker and repo. program fails if tmp has not been deleted.
 console.log("running... if no output, ensure 'tmp' folder is deleted & run again.");
-var walker = null;
-var currentRepo = null;
+let walker = null;
+let currentRepo = null;
 
 // clone the repo at its current state.
 Git.Clone(url, localPath).then(function(repository) {
@@ -44,7 +44,7 @@ Git.Clone(url, localPath).then(function(repository) {
     console.log(commits.length);
 
     // finally we can iterate through each commit.
-    for(var i = (commits.length - 1); i >= 0; i--) {
+    for(let i = (commits.length - 1); i >= 0; i--) {
         const sha = commits[i].sha();
         currentCommit = commits[i];
 
