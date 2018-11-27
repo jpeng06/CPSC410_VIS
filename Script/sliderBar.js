@@ -15,10 +15,6 @@ $('input[type="range"]').rangeslider({
     // Callback function
     onInit: function() {
         $rangeEl = this.$range;
-        // add value label to handle
-        var $handle = $rangeEl.find('.rangeslider__handle');
-        var handleValue = '<div class="rangeslider__handle__value">' + this.value + '</div>';
-        $handle.append(handleValue);
 
         // get range index labels
         var rangeLabels = this.$element.attr('labels');
@@ -29,6 +25,11 @@ $('input[type="range"]').rangeslider({
         $(rangeLabels).each(function(index, value) {
             $rangeEl.find('.rangeslider__labels').append('<span class="rangeslider__labels__label">' + value + '</span>');
         })
+
+        // add value label to handle
+        var $handle = $rangeEl.find('.rangeslider__handle');
+        var handleValue = '<div class="rangeslider__handle__value">' + rangeLabels[this.value] + '</div>';
+        $handle.append(handleValue);
     },
 
     // Callback function
