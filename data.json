@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {"id": "foo", "size": 10},
+    {"id": "foo2", "size": 20},
+    {"id": "foo3", "size": 30},
+    {"id": "foo4", "size": 44},
+    {"id": "foo5", "size": 30},
+    {"id": "Main", "size": 10}
+  ],
+  "links": [
+    {"source": "foo", "target": "foo2"},
+    {"source": "Main", "target": "foo2"},
+    {"source": "foo3", "target": "foo"},
+    {"source": "foo4", "target": "Main"},
+    {"source": "foo5", "target": "foo"}
+  ]
+}
