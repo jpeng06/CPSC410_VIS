@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jpeng06/CPSC410_VIS#readme",
   "dependencies": {
+    "java-parser": "0.0.2",
     "nodegit": "^0.23.0"
   }
 }
