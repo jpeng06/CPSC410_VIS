@@ -219,18 +219,24 @@ let numLines = 0;
 
 let methods = { nodes: [], links: [] };
 
-parseDirectory(directory).then(() => {
-    // console.log("Class Field Declarations:");
-    // console.log(classFieldDeclarations);
-    // console.log("\n\n\n");
-    // console.log("Local Variable Declarations:");
-    // console.log(localVariableDeclarations);
-    // console.log("\n\n\n");
-    // console.log("Output:");
-    console.log(methods);
-}).catch((err) => {
-    console.log(err);
-});
+// parseDirectory(directory).then(() => {
+//     // console.log("Class Field Declarations:");
+//     // console.log(classFieldDeclarations);
+//     // console.log("\n\n\n");
+//     // console.log("Local Variable Declarations:");
+//     // console.log(localVariableDeclarations);
+//     // console.log("\n\n\n");
+//     // console.log("Output:");
+//     console.log(methods);
+//     return methods;
+// }).catch((err) => {
+//     console.log(err);
+// });
 
+exports.parseDirectory = function (target) {
+    parseDirectory(target).then(() => {
+        return methods;
+    })
+};
 
 

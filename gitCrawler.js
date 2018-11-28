@@ -11,6 +11,7 @@
 // set up variables. currently grabbing repo from a hardcoded URL; could change this to a command line argument/other.
 const Git = require("nodegit");
 const fs = require('fs-extra');
+const javaMethodParser = require('./index');
 
 const url = "https://github.com/jpeng06/CPSC410_VIS.git";     // repo to clone
 const localPath = require("path").join(__dirname, "tmp");       // where we want to put tmp
@@ -82,9 +83,12 @@ async function parseRepoHistory(target) {
         let commit = await repo.getCommit(sha);
 
         await Git.Checkout.tree(repo, commit, { checkoutStrategy: Git.Checkout.STRATEGY.FORCE });
+
+        let methods = await javaMethodParser.parseDirectory(localPath);
+
+        console.log(methods);
     }
 }
-
 
 parseRepoHistory(target);
 
