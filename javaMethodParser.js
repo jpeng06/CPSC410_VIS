@@ -113,7 +113,6 @@ function findLocalVariableDeclarations(className, methodName, element) {
 }
 
 async function parseDirectory(path) {
-    console.log(1);
     let entries;
 
     try {
