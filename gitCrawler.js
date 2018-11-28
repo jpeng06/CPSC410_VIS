@@ -36,7 +36,7 @@ async function parseRepoHistory(target, numCommits) {
         history.push(commitInfo);
     }
 
-    console.log(history);
+    console.log("Complete!");
     return history;
 }
 
