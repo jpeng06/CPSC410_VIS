@@ -10,55 +10,81 @@
 
 // set up variables. currently grabbing repo from a hardcoded URL; could change this to a command line argument/other.
 const Git = require("nodegit");
+const fs = require('fs-extra');
 
 const url = "https://github.com/jpeng06/CPSC410_VIS.git";     // repo to clone
-var localPath = require("path").join(__dirname, "tmp");       // where we want to put tmp
-var maxCommits = 30;                                          // max # of commits to go back to.
-var currentCommit = null;
+const localPath = require("path").join(__dirname, "tmp");       // where we want to put tmp
+const maxCommits = 30;                                          // max # of commits to go back to.
+let currentCommit = null;
 
-// initialize our walker and repo. program fails if tmp has not been deleted.
-console.log("running... if no output, ensure 'tmp' folder is deleted & run again.");
-var walker = null;
-var currentRepo = null;
+// initialize our walker and repo.
+let walker = null;
+let currentRepo = null;
 
 // clone the repo at its current state.
-Git.Clone(url, localPath).then(function(repository) {
-    currentRepo = repository;
-    console.log("cloned repo successfully under 'tmp'.");
+// Git.Clone(url, localPath).then(function(repository) {
+//     currentRepo = repository;
+//     console.log("cloned repo successfully under 'tmp'.");
+//
+//     // this "walker" will collect SHA #'s for us to identify individual commits with later on:
+//     walker = repository.createRevWalk();
+//     console.log("created walker");
+//
+//     // we need to set the walker to head before it can traverse the tree:
+//     walker.pushHead();
+//     console.log("walker placed on head. getting commits: ");
+//
+//     // now lets return a simple array containing sha's from commit history:
+//     return walker.getCommits(maxCommits);
+//
+// }).then(function(commits) {
+//
+//     // log number of commits for debugging (segfaults can occur here):
+//     console.log("commit history retrieved... working...");
+//     console.log(commits.length);
+//
+//     // finally we can iterate through each commit.
+//     for(let i = (commits.length - 1); i >= 0; i--) {
+//         const sha = commits[i].sha();
+//         currentCommit = commits[i];
+//
+//         currentRepo.getCommit(sha).then(function(commit) {
+//             console.log("checking out commit: " + sha);
+//             Git.Checkout.tree(currentRepo, commit, {checkoutStrategy: Git.Checkout.STRATEGY.SAFE}).then(function() {
+//                 // DO THINGS + STUFF...
+//                 // ...
+//                 // ...
+//                 console.log("success.");
+//             });
+//         });
+//     }
+//
+//     // fin.
+//     console.log("all done.");
+// });
 
-    // this "walker" will collect SHA #'s for us to identify individual commits with later on:
-    walker = repository.createRevWalk();
-    console.log("created walker");
+let target = process.argv[2];
 
-    // we need to set the walker to head before it can traverse the tree:
-    walker.pushHead();
-    console.log("walker placed on head. getting commits: ");
-
-    // now lets return a simple array containing sha's from commit history:
-    return walker.getCommits(maxCommits);
-
-}).then(function(commits) {
-
-    // log number of commits for debugging (segfaults can occur here):
-    console.log("commit history retrieved... working...");
-    console.log(commits.length);
-
-    // finally we can iterate through each commit.
-    for(var i = (commits.length - 1); i >= 0; i--) {
-        const sha = commits[i].sha();
-        currentCommit = commits[i];
-
-        currentRepo.getCommit(sha).then(function(commit) {
-            console.log("checking out commit: " + sha);
-            Git.Checkout.tree(currentRepo, commit, {checkoutStrategy: Git.Checkout.STRATEGY.SAFE}).then(function() {
-                // DO THINGS + STUFF...
-                // ...
-                // ...
-                console.log("success.");
-            });
-        });
+async function parseRepoHistory(target) {
+    if (fs.pathExistsSync(localPath)) {
+        fs.removeSync(localPath);
     }
 
-    // fin.
-    console.log("all done.");
-});
+    let repo = await Git.Clone(target, localPath);
+
+    let walker = repo.createRevWalk();
+    walker.sorting(4);
+    walker.pushHead();
+    let commits = await walker.getCommits(maxCommits);
+
+    for (let c of commits) {
+        let sha = c.sha();
+        let commit = await repo.getCommit(sha);
+
+        await Git.Checkout.tree(repo, commit, { checkoutStrategy: Git.Checkout.STRATEGY.FORCE });
+    }
+}
+
+
+parseRepoHistory(target);
+
