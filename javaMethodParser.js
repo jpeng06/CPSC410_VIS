@@ -25,17 +25,20 @@ function findMethodInvocations(className, currMethod, element) {
         if (element.expression && element.expression.identifier) {
             let objectName = element.expression.identifier;
 
-            if (localVariableDeclarations.hasOwnProperty(className + "." + methodName + "." + objectName)) {
-                let type = localVariableDeclarations[className + "." + methodName + "." + objectName];
+            let localVariableDeclaration = className + "." + currMethod + "." + objectName;
+            if (localVariableDeclarations.hasOwnProperty(localVariableDeclaration)) {
+                let type = localVariableDeclarations[localVariableDeclaration];
 
-                if (methods.nodes.find(x => x.id === type + "." + methodName)) {
+                if (methods.nodes.find(x => x.id === type + "." + methodName) &&
+                    !methods.links.find(y => y.source === className + "." + currMethod && y.target === type + "." + methodName)) {
                     let methodLinkInfo = { source: className + "." + currMethod, target: type + "." + methodName };
                     methods.links.push(methodLinkInfo);
                 }
             } else if (classFieldDeclarations.hasOwnProperty(className + "." + objectName)) {
                 let type = classFieldDeclarations[className + "." + objectName];
 
-                if (methods.nodes.find(x => x.id === type + "." + methodName)) {
+                if (methods.nodes.find(x => x.id === type + "." + methodName) &&
+                    !methods.links.find(y => y.source === className + "." + currMethod && y.target === type + "." + methodName)) {
                     let methodLinkInfo = { source: className + "." + currMethod, target: type + "." + methodName };
                     methods.links.push(methodLinkInfo);
 
@@ -43,7 +46,8 @@ function findMethodInvocations(className, currMethod, element) {
             }
         } else {
 
-            if (methods.nodes.find(x => x.id === className + "." + methodName)) {
+            if (methods.nodes.find(x => x.id === className + "." + methodName) &&
+                !methods.links.find(y => y.source === className + "." + currMethod && y.target === className + "." + methodName)) {
                 let methodLinkInfo = { source: className + "." + currMethod, target: className + "." + methodName };
                 methods.links.push(methodLinkInfo);
             }
@@ -182,17 +186,19 @@ async function parseDirectory(path) {
                         if (bodyDec.node === 'MethodDeclaration') {
                             let methodName = bodyDec.name.identifier;
 
-                            if (bodyDec.body) {
+                            if (!methods.nodes.find(x => x.id === className + "." + methodName)) {
+                                if (bodyDec.body) {
 
-                                for (let statement of bodyDec.body.statements) {
-                                    numLines++;
-                                    findMethodLengths(statement);
+                                    for (let statement of bodyDec.body.statements) {
+                                        numLines++;
+                                        findMethodLengths(statement);
+                                    }
+
+                                    let methodSizeInfo = { id: className + "." + methodName, size: numLines };
+                                    methods.nodes.push(methodSizeInfo);
+
+                                    numLines = 0;
                                 }
-
-                                let methodSizeInfo = { id: className + "." + methodName, size: numLines };
-                                methods.nodes.push(methodSizeInfo);
-
-                                numLines = 0;
                             }
                         }
                     }

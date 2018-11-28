@@ -21,6 +21,10 @@ async function parseRepoHistory(target, numCommits) {
     walker.pushHead();
     let commits = await walker.getCommits(numCommits);
 
+    if (fs.pathExistsSync(outputPath)) {
+        fs.removeSync(outputPath);
+    }
+
     for (let c of commits) {
         let sha = c.sha();
 
