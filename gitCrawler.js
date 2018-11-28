@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 const javaMethodParser = require('./javaMethodParser');
 
 const localPath = require("path").join(__dirname, "tmp/");       // where we want to put tmp
+const outputPath = require("path").join(__dirname, "output/");
 
 let target = process.argv[2];
 let numCommits = process.argv[3];
@@ -20,8 +21,6 @@ async function parseRepoHistory(target, numCommits) {
     walker.pushHead();
     let commits = await walker.getCommits(numCommits);
 
-    let history = [];
-
     for (let c of commits) {
         let sha = c.sha();
 
@@ -31,15 +30,10 @@ async function parseRepoHistory(target, numCommits) {
 
         let methods = await javaMethodParser.parseDir(localPath);
 
-        let commitInfo = { date: commit.date(), methodInfo: methods };
-
-        history.push(commitInfo);
+        fs.outputJsonSync(outputPath + commit.date() + ".json", methods);
     }
 
     console.log("Complete!");
-    return history;
 }
 
-parseRepoHistory(target, numCommits).then((history) => {
-    return history;
-});
+parseRepoHistory(target, numCommits);
