@@ -14,7 +14,7 @@ const fs = require('fs-extra');
 const javaMethodParser = require('./index');
 
 const url = "https://github.com/jpeng06/CPSC410_VIS.git";     // repo to clone
-const localPath = require("path").join(__dirname, "tmp");       // where we want to put tmp
+const localPath = require("path").join(__dirname, "tmp/");       // where we want to put tmp
 const maxCommits = 30;                                          // max # of commits to go back to.
 let currentCommit = null;
 
@@ -78,15 +78,27 @@ async function parseRepoHistory(target) {
     walker.pushHead();
     let commits = await walker.getCommits(maxCommits);
 
-    for (let c of commits) {
-        let sha = c.sha();
+    // for (let c of commits) {
+    //     let sha = c.sha();
+    //     let commit = await repo.getCommit(sha);
+    //
+    //     await Git.Checkout.tree(repo, commit, { checkoutStrategy: Git.Checkout.STRATEGY.FORCE });
+    //
+    //     let methods = await javaMethodParser.parseDirectory(localPath);
+    //
+    //     //console.log(methods);
+    // }
+
+    for (let i = 0; i < 1; i++) {
+        let sha = commits[i].sha();
+        console.log(sha);
         let commit = await repo.getCommit(sha);
 
         await Git.Checkout.tree(repo, commit, { checkoutStrategy: Git.Checkout.STRATEGY.FORCE });
 
         let methods = await javaMethodParser.parseDirectory(localPath);
-
-        console.log(methods);
+        //console.log(methods);
+        console.log("This should appear after the numbers.\n\n\n");
     }
 }
 

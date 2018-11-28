@@ -113,6 +113,7 @@ function findLocalVariableDeclarations(className, methodName, element) {
 }
 
 async function parseDirectory(path) {
+    console.log(1);
     let entries;
 
     try {
@@ -124,11 +125,15 @@ async function parseDirectory(path) {
 
     for (let entry of entries) {
 
+        // console.log(entry);
+
         if (fs.lstatSync(path + entry).isFile()) {
 
             let extension = entry.slice((entry.lastIndexOf(".") - 1 >>> 0) + 2);
 
             if (extension === 'java') {
+
+                // console.log("JAVA FILE! " + entry);
 
                 let contentBuffer;
 
@@ -233,8 +238,9 @@ let methods = { nodes: [], links: [] };
 //     console.log(err);
 // });
 
-exports.parseDirectory = function (target) {
+exports.parseDirectory = async function (target) {
     parseDirectory(target).then(() => {
+        console.log(methods);
         return methods;
     })
 };
