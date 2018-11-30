@@ -24,20 +24,33 @@ async function parseRepoHistory(target, numCommits) {
     if (fs.pathExistsSync(outputPath)) {
         fs.removeSync(outputPath);
     }
-
+    
+    var count = 0;
     for (let c of commits) {
         let sha = c.sha();
+        
+        console.log("Downloading Commit: "+sha);
 
         let commit = await repo.getCommit(sha);
+        
+        console.log("start analyzing...");
 
         await Git.Checkout.tree(repo, commit, { checkoutStrategy: Git.Checkout.STRATEGY.FORCE });
+        
+        console.log("parsing");
 
         let methods = await javaMethodParser.parseDir(localPath);
+        
+        console.log("done");
+        
+        console.log("Commit saved as " + outputPath + "["+count+"]" + commit.date().toLocaleDateString() + ".json");
 
-        fs.outputJsonSync(outputPath + commit.date() + ".json", methods);
+        fs.outputJsonSync(outputPath + "["+count+"]" + commit.date().toLocaleDateString() + ".json", methods);
+        count++;
+        
     }
 
-    console.log("Complete!");
+    console.log(count + " commits analyzed and parsed successfully!");
 }
 
 parseRepoHistory(target, numCommits);

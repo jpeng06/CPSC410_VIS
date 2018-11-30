@@ -1,3 +1,16 @@
+var names = [
+    "[2]2018-10-06.json",
+    "[4]2018-10-06.json",
+    "[7]2018-10-14.json",
+    "[9]2018-10-14.json",
+    "[12]2018-10-15.json",
+    "[14]2018-10-16.json",
+    "[16]2018-10-16.json",
+    "[18]2018-10-16.json",
+    "[20]2018-10-17.json",
+    "[24]2018-10-17.json"
+];
+
 $('input[type="range"]').rangeslider({
     // Feature detection the default is `true`.
     // Set this to `false` if you want to use
@@ -38,6 +51,8 @@ $('input[type="range"]').rangeslider({
         rangeLabels = rangeLabels.split(', ');
         var $handle = this.$range.find('.rangeslider__handle__value');
         $handle.text(rangeLabels[this.value]);
+        $('#visualization').empty();
+        doD3("output/"+names[this.value]);
     },
 
     // Callback function
